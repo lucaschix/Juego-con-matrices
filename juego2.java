@@ -149,7 +149,7 @@ public class juego2 {
         System.out.println("Mapa:");
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("Ingrese una dirección (N: norte, S: sur, E: este, O: oeste): ");
+            System.out.println("Ingrese una dirección (w: norte, s: sur, d: este, a: oeste): ");
             String direccion = scanner.next();
 
             Personaje.moverPersonaje(direccion); // move the player
