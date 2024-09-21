@@ -1,5 +1,4 @@
 import java.util.Scanner;
-
 public class juego2 {
     private static String[][] mapa;
     public juego2() {
@@ -17,7 +16,6 @@ public class juego2 {
                 mapa[8][4]="C";
                 mapa[4][8]="C";
                 mapa[8][1]="X";
-
             }
         }
     }
@@ -35,22 +33,17 @@ public class juego2 {
             System.out.println();
         }
     }
-
     public class Personaje {
         public static String[] heroe  = new String[4];
-
         public static void initPlayer() {
             heroe[0] = "1";
             heroe[1] = "1";
             heroe[2] = "100";
-            heroe[3] = "45";
+            heroe[3] = "15";
         }
-
         public static void moverPersonaje(String direccion) {
             int x = Integer.parseInt(heroe[0]);
             int y = Integer.parseInt(heroe[1]);
-            int vida = Integer.parseInt(heroe[2]);
-
             switch (direccion) {
                 case "w":
                     x -= 1;
@@ -65,37 +58,47 @@ public class juego2 {
                     y -= 1;
                     break;
             }
-
             if (x >= 1 && x < 9 && y >= 1 && y < 9) {
                 heroe[0] = String.valueOf(x);
                 heroe[1] = String.valueOf(y);
             }
-            if (x==4 && y==4){
-                System.out.println("se han sumado 20 de vida");
-                vida += 20;
-
-            }else if(x==8 && y==8){
-                vida += 20;
-                System.out.println("se han sumado 20 de vida");
-            }else if(x==8 && y==4){
-                System.out.println("se han restado 20 de vida");
-                vida -= 20;
-            }else if(x==4 && y==8){
-                System.out.println("se han restado 20 de vida");
-                vida -= 20;
-            }else{
-                System.out.println("no paha naa");
-            }
-            System.out.println(vida);
-            heroe[2] = String.valueOf(vida);
-
-            // Check if the hero has encountered an enemy
+            encuentroconuncofre();
             int z = Integer.parseInt(Enemigo.enemigo[0]);
             int w = Integer.parseInt(Enemigo.enemigo[1]);
             if (x == z && y == w) {
                 pelea(); // Call the pelea method if the hero has encountered an enemy
             }
         }
+    }
+    public class Enemigo {
+        public static String[] enemigo  = new String[4];
+        public static void initEnemigo() {
+            enemigo[0] = "5"; // initial X coordinate
+            enemigo[1] = "5"; // initial Y coordinate
+            enemigo[2] = "45"; // initial life
+            enemigo[3] = "10"; // initial attack
+        }
+    }
+    public static void encuentroconuncofre(){
+        int x = Integer.parseInt(Personaje.heroe[0]);
+        int y = Integer.parseInt(Personaje.heroe[1]);
+        int vida = Integer.parseInt(Personaje.heroe[2]);
+        if (x==4 && y==4){
+            System.out.println("Encontraste un cofre se han sumado 20 de vida");
+            vida += 20;
+        }else if(x==8 && y==8){
+            vida += 20;
+            System.out.println("Encontraste un cofre se han sumado 20 de vida");
+        }else if(x==8 && y==4){
+            System.out.println("Encontraste un cofre se han restado 20 de vida");
+            vida -= 20;
+        }else if(x==4 && y==8){
+            System.out.println("Encontraste un cofre se han restado 20 de vida");
+            vida -= 20;
+        }else{
+            System.out.println("pepe");
+        }
+        Personaje.heroe[2] = String.valueOf(vida);
     }
     public static void pelea(){
         int x = Integer.parseInt(Personaje.heroe[0]);
@@ -107,8 +110,6 @@ public class juego2 {
             System.out.print("Elige la opcion mas sabia en base a tu vida: a) huir como un cobarde; b) pelear como un macho pecho peludo lomo plateado:");
             String opcion = scanner.next();
             cowalski_opciones(opcion);
-            x+=1;
-            y+=1;
         }else{
             System.out.println("No hay moros en la costa sjjsj");
         }
@@ -122,25 +123,50 @@ public class juego2 {
                 Personaje.heroe[2] = String.valueOf(vida_restanteheroea);
                 System.out.println("Vida del héroe: " + Personaje.heroe[2]);
                 System.out.println("Vida del enemigo" + Enemigo.enemigo[2]);
+                moverse_encasoA();
             case "b":
                 int vida_restanteheroeb=Integer.parseInt(Personaje.heroe[2])-3*Integer.parseInt(Enemigo.enemigo[3]);
                 int vida_restanteenemigob= Integer.parseInt(Enemigo.enemigo[2])-3*Integer.parseInt(Personaje.heroe[3]);
                 Personaje.heroe[2] = String.valueOf(vida_restanteheroeb);
                 Enemigo.enemigo[2] = String.valueOf(vida_restanteenemigob);
+                CasoB();
                 System.out.println("Vida del héroe: " + Personaje.heroe[2]);
-
         }
     }
-    public class Enemigo {
-        public static String[] enemigo  = new String[4];
-
-        public static void initEnemigo() {
-            enemigo[0] = "5"; // initial X coordinate
-            enemigo[1] = "5"; // initial Y coordinate
-            enemigo[2] = "45"; // initial life
-            enemigo[3] = "10"; // initial attack
+    public static void moverse_encasoA(){
+        int x = Integer.parseInt(Personaje.heroe[0]);
+        int y = Integer.parseInt(Personaje.heroe[1]);
+        x+=1;
+        y+=1;
+        Personaje.heroe[0] = String.valueOf(x);
+        Personaje.heroe[1] = String.valueOf(y);
+    }
+    public static void CasoB(){
+        if(Integer.parseInt(Enemigo.enemigo[2])==0){
+            mapa[5][5]=".";
+            System.out.print("Enemigo derrotado");
         }
     }
+    public static void Muerte(){
+        int vidafinal = Integer.parseInt(Personaje.heroe[2]);
+        if (vidafinal <= 0){
+        System.out.print("Se acabaron tus puntos de vida, lo siento pero perdiste");
+            System.exit(0);
+        }else{
+            System.out.println("Tu vida es " + vidafinal);
+        }
+    }
+    public static void Ganaste(){
+        int x = Integer.parseInt(Personaje.heroe[0]);
+        int y = Integer.parseInt(Personaje.heroe[1]);
+        if(x==8 && y==1){
+            System.out.print("Ganaste llegaste al final del juego");
+            System.exit(0);
+        }else{
+            System.out.print("El heroe sigue su camino");
+        }
+    }
+
 
     public static void main(String[] args) {
         juego2 mapa = new juego2();
@@ -154,6 +180,8 @@ public class juego2 {
 
             Personaje.moverPersonaje(direccion); // move the player
             mapa.imprimirMapa();
+            Muerte();
+            Ganaste();
         }
     }
 }
