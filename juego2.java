@@ -1,6 +1,8 @@
 import java.util.Scanner;
+import java.util.Random;
 public class juego2 {
     private static String[][] mapa;
+    static Random rand = new Random();
     public juego2() {
         mapa = new String[10][10];
         // Inicializar el mapa con casillas vacías
@@ -24,8 +26,8 @@ public class juego2 {
             for (int j = 0; j < 10; j++) {
                 if (i == Integer.parseInt(Personaje.heroe[0]) && j == Integer.parseInt(Personaje.heroe[1])) {
                     System.out.print("P "); // print the player character
-                } else if (i == Integer.parseInt(Enemigo.enemigo[0]) && j == Integer.parseInt(Enemigo.enemigo[1])) {
-                    System.out.print("E "); // print the enemy character
+                } else if (i == Integer.parseInt(Enemigo.enemigo[0]) && j == Integer.parseInt(Enemigo.enemigo[1]) && Integer.parseInt(Enemigo.enemigo[2]) > 0) {
+                    System.out.print("E "); // print the enemy character only if it's not defeated
                 } else {
                     System.out.print(mapa[i][j] + " ");
                 }
@@ -79,26 +81,46 @@ public class juego2 {
             enemigo[3] = "10"; // initial attack
         }
     }
+    public static void Abrir_o_no_cofre(){
+        System.out.print("Deseas abrir el cofre  a) Si / b) No");
+        Scanner scanner = new Scanner(System.in);
+        String opcion = scanner.next();
+        switch (opcion){
+            case "a":
+                Suerte_con_los_cofres();
+                break;
+            case "b":
+                Suerte_con_los_cofres();
+                break;
+        }
+    }
     public static void encuentroconuncofre(){
         int x = Integer.parseInt(Personaje.heroe[0]);
         int y = Integer.parseInt(Personaje.heroe[1]);
-        int vida = Integer.parseInt(Personaje.heroe[2]);
         if (x==4 && y==4){
-            System.out.println("Encontraste un cofre se han sumado 20 de vida");
-            vida += 20;
+            Abrir_o_no_cofre();
         }else if(x==8 && y==8){
-            vida += 20;
-            System.out.println("Encontraste un cofre se han sumado 20 de vida");
+            Abrir_o_no_cofre();
         }else if(x==8 && y==4){
-            System.out.println("Encontraste un cofre se han restado 20 de vida");
-            vida -= 20;
+            Abrir_o_no_cofre();
         }else if(x==4 && y==8){
-            System.out.println("Encontraste un cofre se han restado 20 de vida");
-            vida -= 20;
+            Abrir_o_no_cofre();
         }else{
             System.out.println("pepe");
         }
-        Personaje.heroe[2] = String.valueOf(vida);
+
+    }
+    public static void Suerte_con_los_cofres(){
+        int vida = Integer.parseInt(Personaje.heroe[2]);
+        int randomNum = rand.nextInt(2); // generates a random number between 0 and 1
+        if (randomNum == 0) {
+            System.out.println("Encontraste un cofre se han restado 20 de vida");
+            vida -= 20;
+        } else {
+            vida += 20;
+            System.out.println("Encontraste un cofre se han sumado 20 de vida");
+        }Personaje.heroe[2] = String.valueOf(vida);
+
     }
     public static void pelea(){
         int x = Integer.parseInt(Personaje.heroe[0]);
@@ -123,7 +145,7 @@ public class juego2 {
                 Personaje.heroe[2] = String.valueOf(vida_restanteheroea);
                 System.out.println("Vida del héroe: " + Personaje.heroe[2]);
                 System.out.println("Vida del enemigo" + Enemigo.enemigo[2]);
-                moverse_encasoA();
+                CasoA();
             case "b":
                 int vida_restanteheroeb=Integer.parseInt(Personaje.heroe[2])-3*Integer.parseInt(Enemigo.enemigo[3]);
                 int vida_restanteenemigob= Integer.parseInt(Enemigo.enemigo[2])-3*Integer.parseInt(Personaje.heroe[3]);
@@ -133,7 +155,7 @@ public class juego2 {
                 System.out.println("Vida del héroe: " + Personaje.heroe[2]);
         }
     }
-    public static void moverse_encasoA(){
+    public static void CasoA(){
         int x = Integer.parseInt(Personaje.heroe[0]);
         int y = Integer.parseInt(Personaje.heroe[1]);
         x+=1;
@@ -142,8 +164,10 @@ public class juego2 {
         Personaje.heroe[1] = String.valueOf(y);
     }
     public static void CasoB(){
-        if(Integer.parseInt(Enemigo.enemigo[2])==0){
-            mapa[5][5]=".";
+        if(Integer.parseInt(Enemigo.enemigo[2]) == 0){
+            int x = Integer.parseInt(Enemigo.enemigo[0]);
+            int y = Integer.parseInt(Enemigo.enemigo[1]);
+            mapa[x][y] = "."; // remove the 'E' character from the map
             System.out.print("Enemigo derrotado");
         }
     }
