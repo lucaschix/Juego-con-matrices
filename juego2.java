@@ -81,19 +81,6 @@ public class juego2 {
             enemigo[3] = "10"; // initial attack
         }
     }
-    public static void Abrir_o_no_cofre(){
-        System.out.print("Deseas abrir el cofre  a) Si / b) No");
-        Scanner scanner = new Scanner(System.in);
-        String opcion = scanner.next();
-        switch (opcion){
-            case "a":
-                Suerte_con_los_cofres();
-                break;
-            case "b":
-                Suerte_con_los_cofres();
-                break;
-        }
-    }
     public static void encuentroconuncofre(){
         int x = Integer.parseInt(Personaje.heroe[0]);
         int y = Integer.parseInt(Personaje.heroe[1]);
@@ -108,7 +95,19 @@ public class juego2 {
         }else{
             System.out.println("pepe");
         }
-
+    }
+    public static void Abrir_o_no_cofre(){
+        System.out.print("Deseas abrir el cofre  a) Si / b) No");
+        Scanner scanner = new Scanner(System.in);
+        String opcion = scanner.next();
+        switch (opcion){
+            case "a":
+                Suerte_con_los_cofres();
+                break;
+            case "b":
+                Suerte_con_los_cofres();
+                break;
+        }
     }
     public static void Suerte_con_los_cofres(){
         int vida = Integer.parseInt(Personaje.heroe[2]);
@@ -120,7 +119,6 @@ public class juego2 {
             vida += 20;
             System.out.println("Encontraste un cofre se han sumado 20 de vida");
         }Personaje.heroe[2] = String.valueOf(vida);
-
     }
     public static void pelea(){
         int x = Integer.parseInt(Personaje.heroe[0]);
@@ -131,12 +129,12 @@ public class juego2 {
             Scanner scanner = new Scanner(System.in);
             System.out.print("Elige la opcion mas sabia en base a tu vida: a) huir como un cobarde; b) pelear como un macho pecho peludo lomo plateado:");
             String opcion = scanner.next();
-            cowalski_opciones(opcion);
+            Opcion_de_pelea(opcion);
         }else{
             System.out.println("No hay moros en la costa sjjsj");
         }
     }
-    public static void cowalski_opciones(String opcion){
+    public static void Opcion_de_pelea(String opcion){
         System.out.print("Elige la opcion mas sabia en base a tu vida: a) huir como un cobarde; b) pelear como un macho pecho peludo lomo plateado:");
         switch (opcion){
             case "a":
@@ -158,8 +156,7 @@ public class juego2 {
     public static void CasoA(){
         int x = Integer.parseInt(Personaje.heroe[0]);
         int y = Integer.parseInt(Personaje.heroe[1]);
-        x+=1;
-        y+=1;
+        x+=1;y+=1;
         Personaje.heroe[0] = String.valueOf(x);
         Personaje.heroe[1] = String.valueOf(y);
     }
@@ -190,8 +187,6 @@ public class juego2 {
             System.out.print("El heroe sigue su camino");
         }
     }
-
-
     public static void main(String[] args) {
         juego2 mapa = new juego2();
         Personaje.initPlayer(); // initialize the player
@@ -201,7 +196,6 @@ public class juego2 {
         while (true) {
             System.out.println("Ingrese una dirección (w: norte, s: sur, d: este, a: oeste): ");
             String direccion = scanner.next();
-
             Personaje.moverPersonaje(direccion); // move the player
             mapa.imprimirMapa();
             Muerte();
